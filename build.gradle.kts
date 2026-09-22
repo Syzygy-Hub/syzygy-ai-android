@@ -28,6 +28,9 @@ dependencies {
     // Foundation layer — all AI contracts depend on Foundation primitives.
     api("com.github.Syzygy-Hub:syzygy-foundation-android:1.2.0")
 
+    // Coroutines — required for suspend functions and Flow in LLMProvider.
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+
     // Unit tests — JUnit 5 (Jupiter) via the Kotlin test wrapper.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:2.0.21")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")

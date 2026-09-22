@@ -7,7 +7,10 @@
 
 # syzygy-ai-android
 
-The AI layer of the Syzygy ecosystem — providing LLMProvider, AgentProtocol, RAGProvider, MemoryManager, and StreamHandler contracts for Android.
+The AI layer of the Syzygy ecosystem — providing LLMProvider, AgentProtocol, EmbeddingProvider, RAGProvider, and MemoryManager contracts for Android.
+
+> **v1.0.0 — Pure Contracts Only**
+> This release contains interface and data class definitions only. No concrete implementations are included. Implementations targeting specific LLM backends, vector stores, or memory systems should depend on this package and provide their own conforming types.
 
 ## About
 
@@ -27,7 +30,7 @@ Full ecosystem architecture: [ecosystem-fragment.md](https://github.com/Syzygy-H
 | `AgentProtocol` | ReAct loop contract (Reason → Act → Observe) |
 | `RAGProvider` | Retrieval-augmented generation interface |
 | `MemoryManager` | Conversation context management contract |
-| `StreamHandler` | Token streaming abstraction |
+| `EmbeddingProvider` | Abstract interface for generating text embeddings |
 
 ## Release Process
 
@@ -53,6 +56,8 @@ For the full release standard see the [Syzygy-Hub/.github release standard](http
 - Android API 24+
 - Kotlin 1.9+
 - Android Studio Ladybug or later
+
+> **Note:** This library uses the Kotlin JVM plugin and publishes as a JAR (not an Android AAR). This is intentional for a pure-contracts library with no Android framework dependencies. Consumers on Android can add it as a JVM dependency directly.
 
 ## Installation
 

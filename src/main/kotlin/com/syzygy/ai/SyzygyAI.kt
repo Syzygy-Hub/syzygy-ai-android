@@ -1,4 +1,5 @@
 package com.syzygy.ai
 
-/** Entry point marker for the Syzygy AI layer. */
-object SyzygyAI
+object SyzygyAI {
+    const val VERSION = "1.0.0"
+}

@@ -12,4 +12,6 @@ data class LLMResponse(
     val content: String,
     val tokenUsage: TokenUsage? = null,
     val finishReason: FinishReason? = null,
+    val providerName: String? = null,
+    val modelName: String? = null,
 )

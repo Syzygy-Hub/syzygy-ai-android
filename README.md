@@ -1,4 +1,4 @@
-[![Android](https://img.shields.io/badge/Android-API%2024+-7F77DD?style=flat)](https://developer.android.com/) [![Kotlin](https://img.shields.io/badge/Kotlin-1.9+-1D9E75?logo=kotlin&logoColor=white&style=flat)](https://kotlinlang.org) [![CI](https://img.shields.io/github/actions/workflow/status/Syzygy-Hub/syzygy-ai-android/ci.yml?label=ci&style=flat)](https://github.com/Syzygy-Hub/syzygy-ai-android/actions/workflows/ci.yml) [![Version](https://img.shields.io/badge/version-1.0.0-D85A30?style=flat)](https://github.com/Syzygy-Hub/syzygy-ai-android/releases) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](LICENSE)
+[![Android](https://img.shields.io/badge/Android-API%2024+-7F77DD?style=flat)](https://developer.android.com/) [![Kotlin](https://img.shields.io/badge/Kotlin-1.9+-1D9E75?logo=kotlin&logoColor=white&style=flat)](https://kotlinlang.org) [![CI](https://img.shields.io/github/actions/workflow/status/Syzygy-Hub/syzygy-ai-android/ci.yml?label=ci&style=flat)](https://github.com/Syzygy-Hub/syzygy-ai-android/actions/workflows/ci.yml) [![Version](https://img.shields.io/badge/version-1.1.0-D85A30?style=flat)](https://github.com/Syzygy-Hub/syzygy-ai-android/releases) [![License](https://img.shields.io/badge/License-MIT-green?style=flat)](LICENSE)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Syzygy-Hub/.github/main/brand/assets/banners/syzygy-banner-dark-1200.png">
@@ -8,6 +8,11 @@
 # syzygy-ai-android
 
 The AI layer of the Syzygy ecosystem — providing LLMProvider, AgentProtocol, EmbeddingProvider, RAGProvider, and MemoryManager contracts for Android.
+
+> **v1.1.0 — Typed Tool Calling, Structured Errors & Richer Contracts**
+> Adds `JSONValue`, `AIError`, `ToolCallRequest`/`ToolCallResult`, `StreamContract`, namespaced `MemoryManager`, enriched `RAGChunk`, and operational metadata fields throughout.
+>
+> `RAGChunk.id: String?` is now an optional field (null by default). It will become required in v2.0.0.
 
 > **v1.0.0 — Pure Contracts Only**
 > This release contains interface and data class definitions only. No concrete implementations are included. Implementations targeting specific LLM backends, vector stores, or memory systems should depend on this package and provide their own conforming types.
@@ -31,6 +36,10 @@ Full ecosystem architecture: [ecosystem-fragment.md](https://github.com/Syzygy-H
 | `RAGProvider` | Retrieval-augmented generation interface |
 | `MemoryManager` | Conversation context management contract |
 | `EmbeddingProvider` | Abstract interface for generating text embeddings |
+
+### NamespacedMemoryManager
+
+`NamespacedMemoryManager` extends `MemoryManager` with namespace-scoped operations. On Android, iOS, and React Native, namespace variants use **overloaded method names** — the same verb as the base `MemoryManager` method with an additional `namespace` parameter (e.g. `add(entry, namespace)`, `retrieve(query, namespace)`). Flutter uses **distinct method names** (`addToNamespace`, `retrieveFromNamespace`, `deleteEntry`, `clearNamespace`) because Dart does not support method overloading.
 
 ## Release Process
 
@@ -70,7 +79,7 @@ dependencyResolutionManagement {
 }
 
 // In build.gradle.kts
-implementation("com.github.Syzygy-Hub:syzygy-ai-android:1.0.0")
+implementation("com.github.Syzygy-Hub:syzygy-ai-android:1.1.0")
 ```
 
 ## Foundation Dependency
@@ -80,6 +89,18 @@ implementation("com.github.Syzygy-Hub:syzygy-ai-android:1.0.0")
 **Depends on:** `syzygy-foundation-android` >= 1.2.0
 
 **Used by:** application modules and AI service implementations.
+
+## Development Setup
+
+> **JDK requirement:** CI targets JDK 17. Local builds should use JDK 17 to match CI.
+
+After cloning, install the pre-push hook to run a Gradle build check before every push:
+
+```bash
+bash scripts/install-hooks.sh
+```
+
+The hook runs `./gradlew build` and blocks the push if the build fails. To bypass in an emergency: `git push --no-verify`.
 
 ## Contributing
 

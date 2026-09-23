@@ -7,4 +7,6 @@ data class LLMRequest(
     val maxTokens: Int? = null,
     val topP: Double? = null,
     val stopSequences: List<String> = emptyList(),
+    val requestId: String? = null,
+    val correlationId: String? = null,
 )

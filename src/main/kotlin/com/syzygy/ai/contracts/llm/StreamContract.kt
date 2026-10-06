@@ -20,18 +20,27 @@ import kotlinx.coroutines.flow.Flow
  * [LLMChunk.content] values in emission order reconstructs the full response text.
  *
  * ## Retry
- * On [AIError.NetworkError], callers may retry by invoking [LLMProvider.stream] again with
- * the same [LLMRequest], preserving the original [LLMRequest.requestId] so that downstream
- * telemetry can correlate the attempt with its predecessor.
+ * [LLMProvider.stream] returns a cold [Flow]: calling it does not start any work, and
+ * errors surface during collection, not at the call site. A try/catch around the
+ * `stream()` call therefore never observes them; use the [kotlinx.coroutines.flow.catch]
+ * and [kotlinx.coroutines.flow.retryWhen] Flow operators instead.
+ *
+ * On [AIError.NetworkError], callers may retry by re-collecting the stream with the same
+ * [LLMRequest], preserving the original [LLMRequest.requestId] so that downstream
+ * telemetry can correlate the attempt with its predecessor. Note that a retry restarts the
+ * stream from the beginning, so chunks already emitted will be emitted again.
  *
  * ```kotlin
- * // Canonical retry pattern
- * suspend fun streamWithRetry(provider: LLMProvider, request: LLMRequest): Flow<LLMChunk> =
- *     try {
- *         provider.stream(request)
- *     } catch (e: AIError.NetworkError) {
- *         provider.stream(request) // retains request.requestId for correlation
- *     }
+ * // Canonical retry pattern: errors arrive while the Flow is collected.
+ * fun streamWithRetry(provider: LLMProvider, request: LLMRequest): Flow<LLMChunk> =
+ *     provider.stream(request) // cold: nothing runs until collected
+ *         .retryWhen { cause, attempt ->
+ *             cause is AIError.NetworkError && attempt < 3 // same request => same requestId
+ *         }
+ *         .catch { e ->
+ *             // Reached for non-retryable errors or once retries are exhausted.
+ *             throw e
+ *         }
  * ```
  */
 object StreamContract

@@ -1,21 +1,21 @@
 package com.syzygy.ai.contracts.memory
 
 interface NamespacedMemoryManager : MemoryManager {
-    suspend fun add(
+    suspend fun addToNamespace(
         entry: MemoryEntry,
         namespace: String,
     )
 
-    suspend fun retrieve(
+    suspend fun retrieveFromNamespace(
         query: String,
         namespace: String,
         limit: Int? = null,
     ): List<MemoryEntry>
 
-    suspend fun delete(
+    suspend fun deleteEntry(
         id: String,
         namespace: String,
     )
 
-    suspend fun clear(namespace: String)
+    suspend fun clearNamespace(namespace: String)
 }

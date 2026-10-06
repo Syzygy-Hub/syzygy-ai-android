@@ -5,7 +5,11 @@ import kotlin.test.assertTrue
 
 class SyzygyAITest {
     @Test
-    fun `placeholder test passes`() {
-        assertTrue(true)
+    fun `VERSION is a semantic version`() {
+        assertTrue(SyzygyAI.VERSION.isNotBlank())
+        assertTrue(
+            Regex("""^\d+\.\d+\.\d+$""").matches(SyzygyAI.VERSION),
+            "SyzygyAI.VERSION must be MAJOR.MINOR.PATCH but was '${SyzygyAI.VERSION}'",
+        )
     }
 }

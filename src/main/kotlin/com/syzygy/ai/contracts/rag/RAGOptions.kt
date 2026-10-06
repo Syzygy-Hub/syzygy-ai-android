@@ -36,7 +36,8 @@ class RAGOptions(
         return result
     }
 
-    override fun toString(): String = "RAGOptions(scoreThreshold=$scoreThreshold, metadata=$metadata, maxResults=$maxResults)"
+    override fun toString(): String =
+        "RAGOptions(scoreThreshold=$scoreThreshold, metadata=$metadata, maxResults=$maxResults)"
 
     private companion object {
         const val DEFAULT_MAX_RESULTS = 10

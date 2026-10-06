@@ -208,7 +208,10 @@ class ContractParityTest {
                 override suspend fun clear() = Unit
             }
         runBlocking {
-            manager.addToNamespace(MemoryEntry(id = "e", content = "c", timestamp = SyzygyTimestamp.now(), type = "note"), "ns")
+            manager.addToNamespace(
+                MemoryEntry(id = "e", content = "c", timestamp = SyzygyTimestamp.now(), type = "note"),
+                "ns",
+            )
             manager.retrieveFromNamespace("q", "ns")
             manager.deleteEntry("e", "ns")
             manager.clearNamespace("ns")
